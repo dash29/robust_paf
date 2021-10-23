@@ -2,6 +2,7 @@ import torch
 from torch import Tensor
 import torch.nn as nn
 from typing import Type, Any, Callable, Union, List, Optional
+import models
 
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
@@ -246,13 +247,25 @@ class ResNet(nn.Module):
         return self._forward_impl(x)
 
 
-def ResNet18(num_classes, activation, **kwargs):
-    return ResNet(activation, BasicBlock, [2, 2, 2, 2], num_classes)
+def ResNet18(num_classes, activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return ResNet(act, BasicBlock, [2, 2, 2, 2], num_classes)
 
 
-def ResNet34(num_classes, activation, **kwargs):
-    return ResNet(activation, BasicBlock, [3, 4, 6, 3], num_classes, **kwargs)
+def ResNet34(num_classes, activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return ResNet(act, BasicBlock, [3, 4, 6, 3], num_classes, **kwargs)
 
 
-def ResNet50(num_classes, activation,  **kwargs):
-    return ResNet(activation, Bottleneck, [3, 4, 6, 3], num_classes, **kwargs)
+def ResNet50(num_classes, activation, beta, train=False, fix_act=False, fix_act_val=None,  **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return ResNet(act, Bottleneck, [3, 4, 6, 3], num_classes, **kwargs)

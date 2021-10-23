@@ -86,8 +86,7 @@ def main():
     logger.info(args)
     
     # create model + load checkpoint
-    act = models.__dict__[args.activation](beta=args.pssilu_beta)
-    model = models.__dict__[args.arch](num_classes=args.num_classes, activation=act).to(device).eval()
+    model = models.__dict__[args.arch](num_classes=args.num_classes, activation=args.activation, beta=args.pssilu_beta, train=False).to(device)
     checkpoint = torch.load(args.ckpt, map_location="cpu")
     if args.swa:
         try:

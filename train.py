@@ -128,12 +128,7 @@ def main():
         logger.info(f"New per-gpu batch-size = {args.batch_size}, syn-batch-size = {args.batch_size_syn}, workers = {args.batch_size}")
     
     # create model + optimizer
-    act = models.__dict__[args.activation](beta=args.pssilu_beta)
-    if args.fix_act:
-       act.alpha = nn.Parameter(torch.tensor([args.fix_act_val]))
-       act.alpha.requires_grad=False
-       
-    model = models.__dict__[args.arch](num_classes=args.num_classes, activation=act).to(device).train()
+    model = models.__dict__[args.arch](num_classes=args.num_classes, activation=args.activation, beta=args.pssilu_beta, fix_act=args.fix_act, fix_act_val = args.fix_act_val, train=True).to(device).train()
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay, nesterov=True)
     best_prec = 0
     start_epoch = 0

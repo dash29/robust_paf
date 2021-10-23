@@ -5,6 +5,7 @@ import math
 
 import torch.nn as nn
 import torch.nn.init as init
+import models
 
 __all__ = [
     'VGG', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn',
@@ -68,41 +69,73 @@ cfg = {
 }
 
 
-def vgg11(activation, **kwargs):
+def vgg11(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
     """VGG 11-layer model (configuration "A")"""
-    return VGG(make_layers(cfg['A'], activation), activation)
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return VGG(make_layers(cfg['A'], act), act)
 
 
-def vgg11_bn(activation, **kwargs):
+def vgg11_bn(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
     """VGG 11-layer model (configuration "A") with batch normalization"""
-    return VGG(make_layers(cfg['A'], activation, batch_norm=True), activation)
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return VGG(make_layers(cfg['A'], act, batch_norm=True), act)
 
 
-def vgg13(activation, **kwargs):
+def vgg13(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
     """VGG 13-layer model (configuration "B")"""
-    return VGG(make_layers(cfg['B'], activation), activation)
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return VGG(make_layers(cfg['B'], act), act)
 
 
-def vgg13_bn(activation, **kwargs):
+def vgg13_bn(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
     """VGG 13-layer model (configuration "B") with batch normalization"""
-    return VGG(make_layers(cfg['B'], activation, batch_norm=True), activation)
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return VGG(make_layers(cfg['B'], act, batch_norm=True), act)
 
 
-def vgg16(activation, **kwargs):
+def vgg16(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
     """VGG 16-layer model (configuration "D")"""
-    return VGG(make_layers(cfg['D'], activation), activation)
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return VGG(make_layers(cfg['D'], act), act)
 
 
-def vgg16_bn(activation, **kwargs):
+def vgg16_bn(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
     """VGG 16-layer model (configuration "D") with batch normalization"""
-    return VGG(make_layers(cfg['D'], activation, batch_norm=True), activation)
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return VGG(make_layers(cfg['D'], act, batch_norm=True), act)
 
 
-def vgg19(activation, **kwargs):
+def vgg19(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
     """VGG 19-layer model (configuration "E")"""
-    return VGG(make_layers(cfg['E'], activation), activation)
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return VGG(make_layers(cfg['E'], act), act)
 
 
-def vgg19_bn(activation, **kwargs):
+def vgg19_bn(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
     """VGG 19-layer model (configuration 'E') with batch normalization"""
-    return VGG(make_layers(cfg['E'], activation, batch_norm=True), activation)
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return VGG(make_layers(cfg['E'], act, batch_norm=True), act)

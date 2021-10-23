@@ -2,7 +2,7 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+import models
 
 class BasicBlock(nn.Module):
     def __init__(self, activation, in_planes, out_planes, stride, dropRate=0.0):
@@ -112,39 +112,76 @@ class WideResNet(nn.Module):
         return self.fc(out)
 
 
-def wrn_28_10(activation, **kwargs):
-    return WideResNet(activation, depth=28, widen_factor=10, **kwargs)
+def wrn_28_10(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=28, widen_factor=10, **kwargs)
 
 
-def wrn_28_4(activation, **kwargs):
-    return WideResNet(activation, depth=28, widen_factor=4, **kwargs)
+def wrn_28_4(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=28, widen_factor=4, **kwargs)
 
 
-def wrn_28_5(activation, **kwargs):
-    return WideResNet(activation, depth=28, widen_factor=5, **kwargs)
+def wrn_28_5(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=28, widen_factor=5, **kwargs)
 
 
-def wrn_28_1(activation, **kwargs):
-    return WideResNet(activation, depth=28, widen_factor=1, **kwargs)
+def wrn_28_1(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=28, widen_factor=1, **kwargs)
 
 
-def wrn_34_10(activation, **kwargs):
-    return WideResNet(activation, depth=34, widen_factor=10, **kwargs)
+def wrn_34_10(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=34, widen_factor=10, **kwargs)
 
 
-def wrn_40_2(activation, **kwargs):
-    return WideResNet(activation, depth=40, widen_factor=2, **kwargs)
+def wrn_40_2(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=40, widen_factor=2, **kwargs)
 
 
-def wrn_34_10(activation, **kwargs):
-    return WideResNet(activation, depth=34, widen_factor=10, **kwargs)
+def wrn_34_10(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=34, widen_factor=10, **kwargs)
 
 
 # ~4x slower than wrn-28-10
-def wrn_34_20(activation, **kwargs):
-    return WideResNet(activation, depth=34, widen_factor=20, **kwargs)
+def wrn_34_20(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=34, widen_factor=20, **kwargs)
 
 
 # ~6x slower than wrn-28-10
-def wrn_70_16(activation, **kwargs):
-    return WideResNet(activation, depth=70, widen_factor=16, **kwargs)
+def wrn_70_16(activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return WideResNet(act, depth=70, widen_factor=16, **kwargs)
+    

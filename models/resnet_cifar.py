@@ -2,6 +2,7 @@ import torch
 from torch import Tensor
 import torch.nn as nn
 from typing import Type, Any, Callable, Union, List, Optional
+import models
 
 def conv3x3(in_planes: int, out_planes: int, stride: int = 1, groups: int = 1, dilation: int = 1) -> nn.Conv2d:
     """3x3 convolution with padding"""
@@ -230,13 +231,25 @@ class resnet(nn.Module):
         return self._forward_impl(x)
 
 
-def resnet18(num_classes, activation, **kwargs):
-    return resnet(activation, BasicBlock, [2, 2, 2, 2], num_classes, **kwargs)
+def resnet18(num_classes, activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return resnet(act, BasicBlock, [2, 2, 2, 2], num_classes, **kwargs)
 
 
-def resnet34(num_classes, activation, **kwargs):
-    return resnet(activation, BasicBlock, [3, 4, 6, 3], num_classes, **kwargs)
+def resnet34(num_classes, activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return resnet(act, BasicBlock, [3, 4, 6, 3], num_classes, **kwargs)
 
 
-def resnet50(num_classes, activation, **kwargs):
-    return resnet(activation, Bottleneck, [3, 4, 6, 3], num_classes, **kwargs)
+def resnet50(num_classes, activation, beta, train=False, fix_act=False, fix_act_val=None, **kwargs):
+    act = models.__dict__[activation](beta=beta)
+    if train and fix_act:
+       act.alpha = nn.Parameter(torch.tensor([fix_act_val]))
+       act.alpha.requires_grad=False
+    return resnet(act, Bottleneck, [3, 4, 6, 3], num_classes, **kwargs)
